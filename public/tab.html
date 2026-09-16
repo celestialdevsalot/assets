@@ -1,0 +1,895 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/clst.update.js?v=2"></script>
+  <script src="/clst.magic.js"></script>
+  <title>Home - Compton Early College High School</title>
+  <link rel="shortcut icon" type="image/png" href="/assets/img/logo-blackbg.png" />
+  <link rel="stylesheet" href="/assets/css/home.css" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <meta name="Home - Compton Early College High School" />
+  <meta content="Home - Compton Early College High School" property="og:title" />
+  <meta content="Home - Compton Early College High School" />
+  <meta property="og:description" content="Home - Compton Early College High School">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+    #main {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 3.5rem;
+    }
+
+    .updlog {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: var(--color);
+      cursor: pointer;
+      width: 60px;
+      background: var(--pallet);
+    }
+
+    .updlog img {
+      width: 40px;
+    }
+
+    body[theme="light"] .updlog img {
+      filter: invert(1);
+    }
+
+    body[theme="light"] .card img {
+      filter: invert(1);
+    }
+
+    body[theme="light"] .sidebar-card img {
+      filter: invert(1);
+    }
+
+    .upd-bg {
+      position: fixed;
+      inset: 0;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.2);
+      z-index: 999;
+      display: none;
+    }
+
+    .card img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
+
+    #update-log {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--pallet2);
+      border: 0.7px solid var(--border);
+      color: var(--color);
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 1000;
+      width: 40vw;
+      height: 350px;
+      overflow-y: auto;
+    }
+
+    .alert-box-sm {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 5px;
+      background-color: var(--pallet);
+      border: 1px solid #2f3136;
+      border-radius: 6px;
+      width: 120px;
+      box-sizing: border-box;
+      justify-content: center;
+      align-items: center;
+    }
+
+    body[theme="light"] #close img {
+      filter: invert(1);
+    }
+
+    .alert-box-sm img {
+      width: 25px;
+      display: block;
+      flex-shrink: 0;
+      margin: 0;
+    }
+
+    .alert-content {
+      display: flex;
+      flex-direction: column;
+      font-family: sans-serif;
+      color: var(--color);
+      font-size: 14px;
+      padding-bottom: 2px;
+    }
+
+    .shortcut-modal-bg {
+      position: fixed;
+      inset: 0;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1001;
+      display: none;
+    }
+
+    .shortcut-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--pallet2);
+      border: 0.7px solid var(--border);
+      color: var(--color);
+      padding: 30px;
+      border-radius: 10px;
+      z-index: 1002;
+      width: 90%;
+      max-width: 400px;
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .shortcut-modal h2 {
+      margin: 0 0 10px 0;
+      font-size: 1.5rem;
+    }
+
+    .modal-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .modal-form-group label {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .modal-form-group input[type="text"],
+    .modal-form-group input[type="url"] {
+      padding: 10px;
+      background: var(--pallet);
+      border: 1px solid var(--border);
+      color: var(--color);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    .modal-form-group input[type="text"]:focus,
+    .modal-form-group input[type="url"]:focus {
+      outline: none;
+      border-color: var(--color);
+    }
+
+    .modal-checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-checkbox-group input[type="checkbox"] {
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    .modal-buttons .btn-save {
+      background: var(--pallet2);
+      color: var(--color);
+      border: 1px solid var(--color);
+    }
+
+    .modal-buttons .btn-cancel {
+      background: var(--pallet);
+      color: var(--color);
+    }
+
+    .card-delete-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(255, 50, 50, 0.8);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+
+    .card-delete-btn:hover {
+      background: rgba(255, 20, 20, 1);
+    }
+
+    .card.custom-shortcut {
+      position: relative;
+    }
+
+    .card.custom-shortcut:hover .card-delete-btn {
+      display: flex;
+    }
+
+    .hamburger-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--pallet2);
+      border: 1px solid var(--border);
+      color: var(--color);
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      z-index: 2000;
+      transition: all 0.2s;
+    }
+
+    .hamburger-btn span {
+      width: 24px;
+      height: 2px;
+      background: var(--color);
+      border-radius: 1px;
+      transition: all 0.3s;
+    }
+
+    .hamburger-btn.active span:nth-child(1) {
+      transform: rotate(45deg) translateY(10px);
+    }
+
+    .hamburger-btn.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger-btn.active span:nth-child(3) {
+      transform: rotate(-45deg) translateY(-10px);
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1999;
+      display: none;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: -350px;
+      top: 0;
+      width: 300px;
+      height: 100vh;
+      background: var(--pallet2);
+      border-right: 1px solid var(--border);
+      color: var(--color);
+      z-index: 2001;
+      padding: 20px;
+      overflow-y: auto;
+      transition: left .3s ease;
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar h2 {
+      margin: 0 0 25px;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .sidebar-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .sidebar-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px;
+      background: var(--pallet);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--color);
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .sidebar-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--color);
+    }
+
+    .sidebar-card-image {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .sidebar-card-name {
+      font-size: .95rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .gme-of-day {
+      margin-top: 20px;
+      padding: 14px;
+      background: var(--pallet);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .gme-of-day:hover {
+      transform: translateY(-2px);
+      border-color: var(--color);
+    }
+
+    .gme-of-day-label {
+      font-size: .8rem;
+      opacity: .7;
+      margin-bottom: 10px;
+    }
+
+    .gme-of-day img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .gme-of-day h3 {
+      margin: 10px 0 0;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .sidebar-list a svg {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+  </style>
+
+</head>
+
+<body theme="default">
+  <button class="hamburger-btn" id="hamburger-btn">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <h2 align="center">dashboard</h2>
+
+    <div class="sidebar-cards">
+      <a href="/support/" target="_blank" class="sidebar-card">
+        <img src="/assets/img/icns/ai.png" class="sidebar-card-image">
+        <span class="sidebar-card-name">ai</span>
+      </a>
+
+      <a href="/music/index.html?type=ms" class="sidebar-card">
+        <img src="/assets/img/icns/music.png" class="sidebar-card-image">
+        <span class="sidebar-card-name">music</span>
+      </a>
+    </div>
+
+    <div class="gme-of-day" id="gme-of-day">
+      <div class="gme-of-day-label" align="center">gẚme of the day</div>
+      <img id="gotd-image">
+      <h3 id="gotd-title">loading...</h3>
+    </div>
+  </aside>
+  <div class="upd-bg"></div>
+  <div id="update-log" style="display: none">
+    <p id="close" onclick="exitUpdLog();" style="
+          font-size: 40px;
+          top: 0;
+          right: 0;
+          position: fixed;
+          margin: 15px;
+          cursor: pointer;
+        ">
+      <img src="/assets/img/close.png" alt="close" style="width: 35px" />
+    </p>
+    <div align="center">
+      <h1>update log 08/21 part 2/3</h1>
+      <h2>hotfix and bug fixes</h2>
+      <hr>
+    </div>
+    <hr>
+    <h2>content:</h2>
+    <p>- ads now have the ability to be disabled, go to settings and press "misc" and turn it off, we reccommend you dont!</p>
+    <p>- ai fixed, math symbols have been fixed and limitation problems have also been fixed</p>
+    <p>- all gẚ<span>m</span><span style="display:none;">haha</span>es have been fixed (yandere simulator, xevious, webfishing, vex, etc)</p>
+    <p>- added hussrooms</p>
+    <p>- GOTD is now global</p>
+    <p>- Fixed movies</p>
+    <p>- next update will have more site support, 200 more gẚmes, chat, history, and more!</p>
+    <hr>
+    <hr>
+    <p>
+      - join the d<span>isc</span>ord for more links!
+      <a href="https://dsc.gg/gnetwork" style="color: var(--color)" target="_blank">.gg/gSjNsVxX5y</a>
+    </p>
+    <p>
+      - proxied ver:
+      <a href="/tab.html?autofill=https://discord.gg/gSjNsVxX5y" style="color: var(--color)">.gg/gSjNsVxX5y</a>
+    </p>
+  </div>
+  <video style="
+        background: rgba(0, 0, 0, 0.566);
+        backdrop-filter: blur(10px);
+        z-index: 999999999999999999;
+      " class="params" autoplay muted playsinline loop src="/assets/img/loading.mp4"></video>
+  <div class="gradientthing">
+    <a class="updlog" onclick="showUpdLog();">
+      <div class="alert-box-sm"> <img src="/assets/img/announcement.png">
+        <div class="alert-content"> <span>update log</span> </div>
+      </div>
+    </a>
+    <div class="main">
+      <div class="bg-match">
+        <h1 id="main">Compton Early College High School</h1>
+        <form id="form">
+          <input class="url" id="address" placeholder="search for online lessons" />
+        </form>
+        <div class="row-thing" id="row-thing">
+          <div class="card" id="card" onclick="window.location.href='/news/index.html?type=g'">
+            <div class="image imgbord">
+              <img src="/assets/img/gms.png" />
+            </div>
+            <p>Contact</p>
+          </div>
+          <div class="card" id="card2" onclick="window.location.href='/tools/index.html?type=ap'">
+            <div class="image imgbord">
+              <img src="/assets/img/tools.png" />
+            </div>
+            <p>Tools</p>
+          </div>
+          <div class="card" id="card3" onclick="window.location.href='/tab.html?autofill=https://dulo.gd/'">
+            <div class="image imgbord">
+              <img src="/assets/img/video.png" />
+            </div>
+            <p>Showcase</p>
+          </div>
+          <div class="card" id="add-card"
+            style="cursor: pointer; display: flex; align-items: center; justify-content: center;">
+            <div class="image imgbord">
+              <img src="/assets/img/icns/plus.png" />
+            </div>
+            <p>add</p>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <a class="a2" href="">Phone Number</a>
+        <a style="text-decoration: none">•</a>
+        <a class="a3" onclick="window.location.href='/legal/index.html?type=l'">Enroll Now!</a>
+        <a style="text-decoration: none">•</a>
+        <a class="ap" onclick="window.location.href='/partners/index.html?type=part'">Staff List</a>
+      </footer>
+    </div>
+  </div>
+  <div style="display: none">
+    <h1>What is Compton Early College High School?</h1>
+    <p>
+      Compton Early College High School is a modern educational institution focused
+      on preparing students for both college and future careers. The school provides
+      a supportive learning environment where students can strengthen their academic
+      skills in subjects such as math, science, reading, and writing while also
+      gaining valuable college experience.
+    </p>
+
+    <h1>How does Compton Early College High School teach students?</h1>
+    <p>
+      The school combines high school coursework with college-level opportunities,
+      allowing students to earn college credits while completing their education.
+      Teachers provide personalized instruction and encourage collaboration,
+      critical thinking, and hands-on learning to help students succeed at their
+      own pace.
+    </p>
+
+    <h1>Why is Compton Early College High School beneficial?</h1>
+    <p>
+      Beyond academics, Compton Early College High School helps students build
+      confidence, responsibility, and leadership skills. Students learn how to
+      manage their time, stay organized, and prepare for higher education and
+      long-term success in their future careers.
+    </p>
+  </div>
+  <div class="shortcut-modal-bg" id="shortcut-modal-bg"></div>
+  <div class="shortcut-modal" id="shortcut-modal">
+    <h2>add a shortcut</h2>
+    <div class="modal-form-group">
+      <label>name?</label>
+      <input type="text" id="modal-name" placeholder="e.g., YouTube, Discord" />
+    </div>
+    <div class="modal-form-group">
+      <label>URL? <span style="font-size: 0.8rem; opacity: 0.7;">(search term accepted)</span></label>
+      <input type="text" id="modal-url" placeholder="e.g., youtube.com or example search" />
+    </div>
+    <div class="modal-checkbox-group">
+      <input type="checkbox" id="modal-fetch-image" />
+      <label for="modal-fetch-image">fetch image from URL?</label>
+    </div>
+    <div class="modal-buttons">
+      <button class="btn-save" id="modal-save">Save</button>
+      <button class="btn-cancel" id="modal-cancel">Cancel</button>
+    </div>
+  </div>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"76c451a9a6054335aea00efd5c8c8833","r":1}' crossorigin="anonymous"></script>
+</body>
+<script src="/assets/js/tabmain.js" type="module"></script>
+<script>
+  document.title = "new tab";
+</script>
+<script defer type="module">
+  import {
+    setWisp,
+    makeURL,
+    setPEngine,
+    getProxied,
+    setTransport,
+  } from "/lithium.mjs";
+
+  setWisp();
+
+  setPEngine(localStorage.getItem("pr0xy") || "scram");
+  setTransport(localStorage.getItem("transportz") || "libcurl");
+
+  const search =
+    localStorage.getItem("search-engine") ||
+    "https://duckduckgo.com/?q=%s";
+
+  async function autofill(url) {
+    const urlToLoad = makeURL(url, search);
+    const proxiedUrl = await getProxied(urlToLoad);
+    location.href = proxiedUrl;
+  }
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const url = params.get("autofill");
+    if (url) autofill(url);
+  } catch {}
+
+  const form = document.getElementById("form");
+  const input = document.getElementById("address");
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const proxiedUrl = await getProxied(makeURL(input.value, search));
+    location.href = proxiedUrl;
+  });
+</script>
+<script>
+  const shortcutModalBg = document.getElementById("shortcut-modal-bg");
+  const shortcutModal = document.getElementById("shortcut-modal");
+  const modalName = document.getElementById("modal-name");
+  const modalUrl = document.getElementById("modal-url");
+  const modalFetchImage = document.getElementById("modal-fetch-image");
+  const modalSave = document.getElementById("modal-save");
+  const modalCancel = document.getElementById("modal-cancel");
+  const addCard = document.getElementById("add-card");
+  const rowThing = document.getElementById("row-thing");
+
+  const hamburgerBtn = document.getElementById("hamburger-btn");
+  const sidebar = document.getElementById("sidebar");
+  const sidebarOverlay = document.getElementById("sidebar-overlay");
+
+  function toggleSidebar() {
+    sidebar.classList.toggle("open");
+    sidebarOverlay.style.display =
+      sidebar.classList.contains("open") ? "block" : "none";
+    hamburgerBtn.classList.toggle("active");
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove("open");
+    sidebarOverlay.style.display = "none";
+    hamburgerBtn.classList.remove("active");
+  }
+
+  hamburgerBtn.addEventListener("click", toggleSidebar);
+  sidebarOverlay.addEventListener("click", closeSidebar);
+
+  async function loadgmeOfDay() {
+    try {
+      const gmes = await fetch("/assets/json/books.json").then(r => r.json());
+
+      const blacklist = [
+        "-!! RANDOM gme",
+        "-! SUGGEST A gme"
+      ];
+
+      const validReq = gmes.filter(
+        gme =>
+          gme.url &&
+          gme.img &&
+          !blacklist.includes(gme.name)
+      );
+
+      if (!validReq.length) {
+        throw new Error("No valid response");
+      }
+
+      const today = new Date();
+
+      const seed =
+        today.getFullYear() * 10000 +
+        (today.getMonth() + 1) * 100 +
+        today.getDate();
+
+      const gme = validReq[seed % validReq.length];
+
+      const card = document.getElementById("gme-of-day");
+      const image = document.getElementById("gotd-image");
+      const title = document.getElementById("gotd-title");
+
+      image.src = gme.img;
+      image.alt = gme.name;
+      title.textContent = gme.name;
+
+      card.onclick = () => {
+        if (gme.source === "local") {
+          location.href =
+            "/news/frame.html?mbed=" +
+            encodeURIComponent(gme.url);
+        } else if (gme.source === "proxied") {
+          location.href =
+            "/tab.html?autofill=" +
+            encodeURIComponent(gme.url);
+        }
+      };
+    } catch {
+      document.getElementById("gotd-title").textContent = "unavailable";
+    }
+  }
+
+  loadgmeOfDay();
+
+  function openModal() {
+    shortcutModalBg.style.display = "block";
+    shortcutModal.style.display = "flex";
+    modalName.value = "";
+    modalUrl.value = "";
+    modalFetchImage.checked = false;
+    modalName.focus();
+  }
+
+  function closeModal() {
+    shortcutModalBg.style.display = "none";
+    shortcutModal.style.display = "none";
+  }
+
+  function createCardElement(name, url, imageUrl, isCustom = false) {
+    const card = document.createElement("div");
+    card.className = isCustom ? "card custom-shortcut" : "card";
+    card.style.cursor = "pointer";
+
+    let cardHTML = `
+      <div class="image imgbord">
+        <img src="${imageUrl}" alt="${name}" />
+      </div>
+      <p>${name}</p>
+    `;
+
+    if (isCustom) {
+      cardHTML += `
+        <button
+          class="card-delete-btn"
+          data-shortcut-name="${name}"
+          type="button"
+        >
+          ×
+        </button>
+      `;
+    }
+
+    card.innerHTML = cardHTML;
+
+    card.addEventListener("click", e => {
+      if (!e.target.classList.contains("card-delete-btn")) {
+        window.location.href =
+          `/tab.html?autofill=${encodeURIComponent(url)}`;
+      }
+    });
+
+    if (isCustom) {
+      const deleteBtn = card.querySelector(".card-delete-btn");
+
+      deleteBtn.addEventListener("click", e => {
+        e.stopPropagation();
+        deleteShortcut(name, card);
+      });
+    }
+
+    return card;
+  }
+
+  function deleteShortcut(name, cardElement) {
+    const shortcuts = JSON.parse(
+      localStorage.getItem("custom-shortcuts") || "{}"
+    );
+
+    delete shortcuts[name];
+
+    localStorage.setItem(
+      "custom-shortcuts",
+      JSON.stringify(shortcuts)
+    );
+
+    cardElement.remove();
+  }
+
+  async function saveShortcut() {
+    const name = modalName.value.trim();
+    const url = modalUrl.value.trim();
+
+    if (!name) {
+      alert("Please enter a shortcut name");
+      return;
+    }
+
+    if (!url) {
+      alert("Please enter a URL or term");
+      return;
+    }
+
+    let imageUrl = "/assets/img/tools.png";
+
+    if (modalFetchImage.checked) {
+      try {
+        imageUrl =
+          `https://www.google.com/s2/favicons?sz=128&domain=${encodeURIComponent(url)}`;
+      } catch {}
+    }
+
+    const shortcuts = JSON.parse(
+      localStorage.getItem("custom-shortcuts") || "{}"
+    );
+
+    shortcuts[name] = {
+      url,
+      imageUrl
+    };
+
+    localStorage.setItem(
+      "custom-shortcuts",
+      JSON.stringify(shortcuts)
+    );
+
+    const newCard = createCardElement(
+      name,
+      url,
+      imageUrl,
+      true
+    );
+
+    rowThing.insertBefore(newCard, addCard);
+
+    closeModal();
+  }
+
+  function loadSavedShortcuts() {
+    const shortcuts = JSON.parse(
+      localStorage.getItem("custom-shortcuts") || "{}"
+    );
+
+    Object.entries(shortcuts).forEach(([name, data]) => {
+      const card = createCardElement(
+        name,
+        data.url,
+        data.imageUrl,
+        true
+      );
+
+      rowThing.insertBefore(card, addCard);
+    });
+  }
+
+  addCard.addEventListener("click", openModal);
+  modalSave.addEventListener("click", saveShortcut);
+  modalCancel.addEventListener("click", closeModal);
+  shortcutModalBg.addEventListener("click", closeModal);
+
+  modalUrl.addEventListener("keypress", e => {
+    if (e.key === "Enter") {
+      saveShortcut();
+    }
+  });
+
+  loadSavedShortcuts();
+</script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const screen = document.querySelector(".params");
+  if (params.has("autofill")) {
+    screen.style.display = "block";
+  }
+</script>
+<script src="/assets/js/theme.js"></script>
+<script>
+  function showUpdLog() {
+    document.getElementById("update-log").style.display = "block";
+    document.querySelector(".upd-bg").style.display = "block";
+  }
+
+  function exitUpdLog() {
+    document.getElementById("update-log").style.display = "none";
+    document.querySelector(".upd-bg").style.display = "none";
+  }
+
+  document.getElementById("close").addEventListener("click", exitUpdLog);
+
+  window.addEventListener("load", function () {
+    if (!localStorage.getItem("updlogview16")) {
+      document.getElementById("update-log").style.display = "block";
+      document.querySelector(".upd-bg").style.display = "block";
+      localStorage.setItem("updlogview16", "1");
+    }
+  });
+</script>
+
+</html>

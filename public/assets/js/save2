@@ -1,0 +1,82 @@
+// this is basically ext.mjs but the user can do it yipee!
+import { currentFrame } from "/lithium.mjs";
+
+window.addExt = addExt;
+window.removeExt = removeExt;
+
+const siteInput = document.getElementById('siteInject');
+const includeEverywhere = document.getElementById('includeEverywhere');
+
+includeEverywhere.addEventListener('change', () => {
+  siteInput.value = '';
+  siteInput.disabled = includeEverywhere.checked;
+  siteInput.style.cursor = includeEverywhere.checked ? 'not-allowed' : 'text';
+});
+
+function extList() {
+  const list = document.getElementById('extList');
+  list.innerHTML = '';
+  const exts = JSON.parse(localStorage.getItem('customExts') || '[]');
+  exts.forEach((ext, index) => {
+    const sites = ext.website?.join(', ') || 'all sites';
+    const item = document.createElement('div');
+    item.className = 'extItem';
+    item.innerHTML = `<span>${sites} (includes: ${ext.includes}, everywhere: ${ext.allsites})</span>
+                      <button onclick="removeExt(${index})">remove</button>`;
+    list.appendChild(item);
+  });
+}
+
+function addExt() {
+  const code = document.getElementById('extCode').value.trim();
+  const site = document.getElementById('siteInject').value.trim();
+  if (!code) return alert('why are you making a extension with no code? are you retarded?');
+  const ext = {
+    website: site ? [site] : [],
+    includes: document.getElementById('includesCheckbox').checked ? "yes" : "no",
+    allsites: includeEverywhere.checked ? "yes" : "no",
+    src: code
+  };
+  const exts = JSON.parse(localStorage.getItem('customExts') || '[]');
+  exts.push(ext);
+  localStorage.setItem('customExts', JSON.stringify(exts));
+  document.getElementById('extCode').value = '';
+  document.getElementById('siteInject').value = '';
+  document.getElementById('includesCheckbox').checked = false;
+  includeEverywhere.checked = false;
+  siteInput.disabled = false;
+  siteInput.style.cursor = 'text';
+  extList();
+}
+
+function removeExt(index) {
+  const exts = JSON.parse(localStorage.getItem('customExts') || '[]');
+  exts.splice(index, 1);
+  localStorage.setItem('customExts', JSON.stringify(exts));
+  extList();
+}
+
+const addBtn = document.getElementById('addExtBtn');
+if (addBtn) addBtn.addEventListener('click', addExt);
+
+window.addEventListener('DOMContentLoaded', () => {
+  extList();
+  if (!currentFrame) return;
+  currentFrame.addEventListener("load", () => {
+    const url = currentFrame.dataset.displayUrl;
+    const hostname = new URL(url).hostname;
+    const exts = JSON.parse(localStorage.getItem('customExts') || '[]');
+    exts.forEach(e => {
+      const sites = Array.isArray(e.website) ? e.website : [];
+      let inject = false;
+      if (e.allsites === "yes") inject = true;
+      else if (e.includes === "yes") inject = sites.some(s => url.includes(s));
+      else inject = sites.includes(hostname);
+      if (inject && currentFrame.contentDocument) {
+        const s = currentFrame.contentDocument.createElement("script");
+        s.textContent = e.src;
+        currentFrame.contentDocument.body.prepend(s);
+      }
+    });
+  });
+});

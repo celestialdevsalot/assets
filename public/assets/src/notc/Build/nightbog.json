@@ -1,0 +1,15 @@
+{
+"companyName": "germfood",
+"productName": "NIGHT OF THE CONSUMERS",
+"productVersion": "1.0",
+"dataUrl": "nightbog.data.unityweb",
+"wasmCodeUrl": "nightbog.wasm.code.unityweb",
+"wasmFrameworkUrl": "nightbog.wasm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#121E1E",
+"developmentBuild": false,
+"multithreading": false,
+"unityVersion": "2019.4.29f1"
+}

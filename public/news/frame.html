@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - Compton Early College High School</title>
+  <link rel="shortcut icon" type="image/png" href="/assets/img/logo-blackbg.png" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <meta name="Home - Compton Early College High School" />
+  <meta content="Home - Compton Early College High School" property="og:title" />
+  <meta property="og:description" content="Home - Compton Early College High School">
+  <style>
+    #bottom-controls {
+      position: fixed;
+      bottom: -.1px;
+      z-index: 10000;
+      display: flex;
+      gap: 10px;
+      background: rgba(0, 0, 0);
+      width: 100%;
+      padding:6px;
+      height:10vh;
+    }
+
+    .bottom-control {
+      width: 58px;
+      height: 58px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid white;
+      background: transparent;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .bottom-control:hover {
+      background: var(--button);
+      transform: translateY(-2px);
+    }
+
+    .bottom-control i {
+      font-size: 32px;
+    }
+
+    #antideledao {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      left: 50%;
+      transform: translateX(-50%);
+      background: url("/assets/img/deledao.png");
+      opacity: 0.55;
+      pointer-events: none;
+      z-index: 9999;
+      background-size: cover;
+    }
+  </style>
+</head>
+
+<body style="margin:0;">
+  <div style="display: none">
+    <h1>What is Compton Early College High School?</h1>
+    <p>
+      Compton Early College High School is a modern educational institution focused
+      on preparing students for both college and future careers. The school provides
+      a supportive learning environment where students can strengthen their academic
+      skills in subjects such as math, science, reading, and writing while also
+      gaining valuable college experience.
+    </p>
+
+    <h1>How does Compton Early College High School teach students?</h1>
+    <p>
+      The school combines high school coursework with college-level opportunities,
+      allowing students to earn college credits while completing their education.
+      Teachers provide personalized instruction and encourage collaboration,
+      critical thinking, and hands-on learning to help students succeed at their
+      own pace.
+    </p>
+
+    <h1>Why is Compton Early College High School beneficial?</h1>
+    <p>
+      Beyond academics, Compton Early College High School helps students build
+      confidence, responsibility, and leadership skills. Students learn how to
+      manage their time, stay organized, and prepare for higher education and
+      long-term success in their future careers.
+    </p>
+  </div>
+  <iframe id="gframe" style="position:fixed;inset:0;width:100%;height:90vh;border:0;background:#000;"
+    title="gframe"></iframe>
+  <div id="bottom-controls">
+    <button id="fullscreen-button" onclick="fullscreenfunc();" class="bottom-control" title="Fullscreen">
+      <i class='bx bx-fullscreen'></i>
+    </button>
+
+    <button id="download-button" class="bottom-control" title="Download">
+      <i class='bx bx-download'></i>
+    </button>
+      <img style="position:absolute;right:125px;color:white;width:60px;" src="/assets/img/logo.png" />
+    <h3 style="position:absolute;right:20px;color:white;">celestial.press</h3>
+  </div>
+  <a id="download-link" style="display:none"></a>
+  <div id="antideledao"></div>
+
+  <script>
+    document.title = "celestial. | play"
+    const params = new URLSearchParams(window.location.search);
+    const url = params.get('mbed') || params.get('src');
+    const iframe = document.getElementById('gframe');
+    const anti = document.getElementById('antideledao');
+    const download = document.getElementById('download-button');
+    const download2 = document.getElementById('download-link');
+
+    if (!url) {
+      console.error('param error');
+    } else {
+      try {
+        const gUrl = new URL(url, window.location.href).href;
+        if (params.has('mbed') && gUrl.includes('/ngg/')) {
+          window.location.replace(gUrl);
+        } else {
+          iframe.src = gUrl;
+          iframe.onerror = () => {
+            console.error('url raped.');
+          };
+        }
+
+        download.addEventListener('click', () => {
+          if (!gUrl) {
+            console.error('url doesnt even fucking exist nigga');
+            return;
+          }
+          const link = gUrl;
+          const downloads = `<style>body,html{margin:0;height:100%;}iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#000;}#download-logo{position:fixed;right:12px;bottom:12px;width:56px;height:56px;pointer-events:none;z-index:9999;}</style><iframe src="${link}"></iframe><img id="download-logo" src="https://cdn.jsdelivr.net/gh/celestialpress/celestial@main/public/assets/img/logo.png" alt="logo">`;
+          const blob = new Blob([downloads], { type: 'text/html' });
+          const objectUrl = URL.createObjectURL(blob);
+          download2.href = objectUrl;
+          download2.download = 'download.html';
+          download2.click();
+          setTimeout(() => URL.revokeObjectURL(objectUrl), 5000);
+        });
+      } catch (err) {
+        console.error('url is cracked.', err);
+      }
+    }
+
+    const antiVisible = localStorage.getItem('deleTog') === 'true';
+    anti.style.display = antiVisible ? 'block' : 'none';
+    if (!localStorage.getItem('deleTog')) {
+      localStorage.setItem('deleTog', 'false');
+    }
+
+    if (antiVisible && !localStorage.getItem('antialert')) {
+      alert('press the bottom menu and press backtick to toggle the overlay on and off');
+      localStorage.setItem('antialert', 'true');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '`') {
+        anti.style.display = anti.style.display === 'none' ? 'block' : 'none';
+        localStorage.setItem('deleTog', anti.style.display === 'block' ? 'true' : 'false');
+        e.preventDefault();
+      }
+    }, true);
+    function fullscreenfunc() {
+      const iframe = document.getElementById('gframe');
+
+      if (!document.fullscreenElement) {
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+          iframe.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+      }
+    }
+  </script>
+</body>
+
+
+</html>

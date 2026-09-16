@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>celestial · screen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e0f;
+      --surface: #161618;
+      --border: rgba(255,255,255,0.08);
+      --border-bright: rgba(255,255,255,0.18);
+      --text: #e8e8e8;
+      --muted: rgba(255,255,255,0.35);
+      --accent: #e05c5c;
+      --accent-dim: rgba(224,92,92,0.12);
+      --user-bg: rgba(255,255,255,0.06);
+      --ai-bg: #161618;
+      --font-mono: 'IBM Plex Mono', monospace;
+      --font-sans: 'IBM Plex Sans', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      overflow: hidden;
+    }
+
+    #app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* ── top bar ── */
+    #bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    #dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 1.6s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(224,92,92,0.4); }
+      50% { opacity: 0.5; box-shadow: 0 0 0 4px rgba(224,92,92,0); }
+    }
+
+    #bar-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      flex: 1;
+    }
+
+    #stop {
+      background: var(--accent-dim);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 5px;
+      padding: 4px 11px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: background 0.15s;
+      letter-spacing: 0.03em;
+    }
+
+    #stop:hover { background: rgba(224,92,92,0.22); }
+
+    /* ── preview ── */
+    #preview {
+      flex: 0 0 190px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #preview-placeholder {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    #ss-canvas {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+    }
+
+    /* ── messages ── */
+    #chat-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+    }
+
+    #chat-area::-webkit-scrollbar { width: 3px; }
+    #chat-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+    .ss-msg {
+      padding: 9px 12px;
+      border-radius: 7px;
+      font-size: 13px;
+      line-height: 1.55;
+      max-width: 88%;
+      animation: fadeUp 0.18s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .ss-msg.user {
+      background: var(--user-bg);
+      border: 1px solid var(--border-bright);
+      align-self: flex-end;
+      font-family: var(--font-sans);
+    }
+
+    .ss-msg.ai {
+      background: var(--ai-bg);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      font-family: var(--font-sans);
+    }
+
+    .ss-msg.typing {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    /* ── input area ── */
+    #bottom {
+      padding: 10px 14px 12px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-shrink: 0;
+      background: var(--surface);
+    }
+
+    #inp {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-bright);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-family: var(--font-sans);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    #inp:focus { border-color: rgba(255,255,255,0.35); }
+    #inp::placeholder { color: var(--muted); }
+
+    #row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #msel {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-bright);
+      color: var(--text);
+      border-radius: 5px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      outline: none;
+    }
+
+    #hint {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--muted);
+      white-space: nowrap;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div id="bar">
+    <div id="dot"></div>
+    <span id="bar-label">screen share</span>
+    <button id="stop">stop sharing</button>
+  </div>
+  <div id="preview">
+    <span id="preview-placeholder">waiting for stream...</span>
+    <canvas id="ss-canvas" width="1" height="1" style="display:none"></canvas>
+  </div>
+  <div id="chat-area"></div>
+  <div id="bottom">
+    <input id="inp" type="text" placeholder="Ask about what's on your screen..." autocomplete="off" />
+    <div id="row">
+      <select id="msel"></select>
+      <span id="hint">↵ enter to ask</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  var chatArea = document.getElementById('chat-area');
+  var canvas   = document.getElementById('ss-canvas');
+  var placeholder = document.getElementById('preview-placeholder');
+
+  var models = ['gpt-5.4-mini', 'gpt-5.4', 'gemini-3-flash-preview'];
+  
+  var msel = document.getElementById('msel');
+  models.forEach(function(m) {
+    var o = document.createElement('option');
+    o.value = m;
+    o.textContent = m;
+    msel.appendChild(o);
+  });
+
+  setTimeout(function() {
+    if (window.opener && !window.opener.closed && window.opener.getModel) {
+      var cur = window.opener.getModel();
+      if (cur === 'claude-sonnet-4.6') cur = 'gpt-5.4';
+      if (cur) msel.value = cur;
+    }
+  }, 100);
+
+  function addMsg(text, role) {
+    var d = document.createElement('div');
+    d.className = 'ss-msg ' + role;
+    d.textContent = text;
+    chatArea.appendChild(d);
+    chatArea.scrollTop = chatArea.scrollHeight;
+    return d;
+  }
+
+  function drawFrame() {
+    if (!window.opener || window.opener.closed) return;
+    var sc = window.opener.screenCanvas;
+    if (!sc || sc.width === 0) return;
+    if (canvas.width !== sc.width) {
+      canvas.width  = sc.width;
+      canvas.height = sc.height;
+    }
+    canvas.getContext('2d').drawImage(sc, 0, 0);
+    if (canvas.style.display === 'none') {
+      canvas.style.display = 'block';
+      placeholder.style.display = 'none';
+    }
+    requestAnimationFrame(drawFrame);
+  }
+
+  requestAnimationFrame(drawFrame);
+
+  document.getElementById('stop').addEventListener('click', function() {
+    if (window.opener && !window.opener.closed) window.opener.stopScreenShare(true);
+    window.close();
+  });
+
+  document.getElementById('inp').focus();
+
+  document.getElementById('inp').addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter') return;
+    var t = this.value.trim();
+    if (!t) return;
+    this.value = '';
+    addMsg(t, 'user');
+    var typing = addMsg('...', 'ai typing');
+    var m = msel.value;
+    if (window.opener && !window.opener.closed && typeof window.opener.sendScreenQuestion === 'function') {
+      window.opener.sendScreenQuestion(t, m, function(reply) {
+        typing.className = 'ss-msg ai';
+        typing.textContent = reply;
+        chatArea.scrollTop = chatArea.scrollHeight;
+      });
+    } else {
+      typing.className = 'ss-msg ai';
+      typing.textContent = 'Error: lost connection to main window.';
+    }
+  });
+</script>
+
+</body>
+</html>

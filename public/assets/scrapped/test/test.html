@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VM</title>
+  <link rel="icon" href="/assets/images/jmw.png" />
+  <link rel="shortcut icon" href="/assets/images/jmw.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="https://jrdnswork.calculra.store/assets/css/main.css">
+  <link rel="stylesheet" href="https://jrdnswork.calculra.store/assets/css/vm.css">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+</head>
+<body theme="classic">
+  <div class="center-screen" id="launchScreen">
+    <h1>JMW Personal Chromium VM</h1>
+    <h4>The Chromium Virtual Machine are machines are personal browsers for your needs.</h4>
+    <h4>Site not supported on our PR0XY? Need to search a private thing? Need to test a website? Use this!</h4>
+    <h4>Your passwords/information are erased after every session.</h4>
+    <button class="launch-btn" id="createSession"><i class="bx bx-laptop"></i> Launch Chromium</button>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div class="vm-container" id="iframeContainer">
+    <iframe
+      id="hyperFrame"
+      sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-popups allow-downloads"
+      allow="clipboard-read; clipboard-write; fullscreen *; autoplay"
+    ></iframe>
+  </div>
+
+  <script src="https://jrdnswork.calculra.store/assets/scripts/index.js"></script>
+  <script src="test.js"></script>
+  <script disable-devtool-auto src="https://unpkg.com/disable-devtool"></script>
+  <script>
+    (() => {
+      document.addEventListener('contextmenu', e => e.preventDefault(), { capture: true });
+      document.addEventListener('keydown', e => {
+        const k = e.key.toLowerCase();
+        if (
+          k === 'f12' ||
+          ((e.ctrlKey || e.metaKey) && ['i','j','c','u'].includes(k) && e.shiftKey) ||
+          k === 'u'
+        ) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
+      }, { capture: true });
+    })();
+  </script>
+</body>
+</html>

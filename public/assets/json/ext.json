@@ -1,0 +1,55 @@
+[
+    {
+        "name": "Mret IXL",
+        "website": ["ixl.com", "www.ixl.com"],
+        "includes": "yes",
+        "src": "fetch('https://raw.githubusercontent.com/JustJxrdanWasDefinetlyTaken/celestial-ext/refs/heads/main/ext/ixl-mret.js') .then(r => r.text()) .then(t => new Function(t)());"
+    },
+    {
+        "name": "example",
+        "website": ["example.org"],
+        "includes": "no",
+        "src": "alert('trademark celestial raviola family on bottom!');"
+    },
+    {
+        "name": "KaHoax",
+        "website": ["kahoot.it"],
+        "includes": "yes",
+        "src": "fetch('https://raw.githubusercontent.com/JustJxrdanWasDefinetlyTaken/celestial-ext/refs/heads/main/ext/kahoot.js') .then(r => r.text()) .then(t => new Function(t)());"
+    },
+    {
+        "name": "nowggalert",
+        "website": ["https://now.gg", "now.gg"],
+        "includes": "yes",
+        "src": "alert('seems like you want to go on now.gg! redirecting..'); location.replace('/tab.html?autofill=https://nowgg.fun');"
+    },
+    {
+        "name": "ytalert",
+        "website": ["https://youtube.com", "youtube.com"],
+        "includes": "yes",
+        "src": "alert('seems like you want to go on youtube! redirecting..'); location.replace('/tab.html?autofill=https://invidious.tiekoetter.com');"
+    },
+    {
+        "name": "Autolingo",
+        "website": ["https://duolingo.com", "http://duolingo.com", "https://duolingo.com/", "http://duolingo.com/"],
+        "includes": "yes",
+        "src": "fetch('https://raw.githubusercontent.com/tranphuquy19/DuolingoBotExtension/refs/heads/tampermonkey-script/index.js') .then(r => r.text()) .then(t => new Function(t)());"
+    },
+    {
+        "name": "Taming.io Banner Removal",
+        "website": ["https://taming.io/", "http://taming.io", "https://taming.io", "http://taming.io/", "taming.io"],
+        "includes": "yes",
+        "src": "javascript:(function(){const wrap=document.getElementById('loading-middle-wrap');if(wrap){const children=Array.from(wrap.children);children.forEach(child=>{if(!child.innerText.includes('Loading TAMING.IO')){child.remove();}});}})();"
+    }, 
+    {
+        "name": "Deltamath Cheats",
+        "website": ["https://deltamath.com", "http://deltamath.com", "https://deltamath.com/", "http://deltamath.com/"],
+        "includes": "yes",
+        "src": "fetch('https://cdn.jsdelivr.net/gh/JustJxrdanWasDefinetlyTaken/celestial-ext@main/ext/deltamath.js') .then(r => r.text()) .then(t => new Function(t)());"
+    }, 
+    {
+        "name": "Global Adblocker",
+        "everywhere": "yes",
+        "src": "(function(e){function t(e){return[\"DIV\",\"SPAN\"].includes(e.tagName)}var a={elem(t){(function(t){for(let a of e.ignore?.selector??[])if(t.matches(a))return!0;for(let a of e.ignore?.func??[])if(a(t))return!0;return!1})(t)||(n.add([t,t.parentElement]),t.remove())},list(e){Array.from(e).forEach((e=>a.elem(e)))},cls(e){a.list(document.getElementsByClassName(e))},selector(e){a.list(document.querySelectorAll(e))},func({func:e,selector:t=null}){let n=null==t?document.getElementsByClassName(\"*\"):document.querySelectorAll(t);for(let t of n)e(t)&&a.elem(t)}},n=new Set,o=new Set;for(let[t,n]of Object.entries(e))if(\"ignore\"!=t)for(let e of n)a[t](e);for(let[e,r]of n)o.has(e)||(o.add(e),r.isConnected&&t(r)&&(r.hasChildNodes()||a.elem(r)))})({cls:[\"adsbygoogle\",\"mod_ad_container\",\"brn-ads-box\",\"gpt-ad\",\"ad-box\",\"top-ads-container\",\"adthrive-ad\"],selector:['[aria-label=\\\"advertisement\\\"]','[class*=\\\"-ad \\\"],[class*=\\\"-ad-\\\"],[class$=\\\"-ad\\\"],[class^=\\\"ad-\\\"],[class^=\\\"adthrive\\\"]',':is(div,iframe)[id^=\\\"google_ads_iframe_\\\"]',\"#aipPrerollContainer\",\"span[data-ez-ph-id] span[data-ez-ph-owner-id] span.ezoicwhat\",\"div#_60cc9a6b-496d-4e44-90d8-0b2947bfd3ce\"],func:[{selector:'[class*=\\\"ad\\\" i],[id*=\\\"ad\\\" i]',func(e){for(const t of[e.id,...e.classList,e.tagName.toLowerCase()])if(/(?<!lo|re|he)(ad|Ad|AD)(vert(isement)?)?s?([tT]hrive)?([cC]ontent)?([eE]ngine|[nN]gin)?([cC]ontainer)?s?($|[-_,\\s])/.test(t))return!0}},{selector:\"div#preroll\",func(e){for(let t of e.children)if(t.matches(\"div#aipBranding\"))return!0}},{selector:\"html > iframe\",func:e=>!(!e.sandbox.contains(\"allow-scripts\")||!e.sandbox.contains(\"allow-same-origin\")||2!=e.sandbox.length||!e.src.toLowerCase().includes(\"gdpr\"))}],ignore:{selector:[\"body\",\".ad-layout\",\"#game-holder.game-holder-with-ad\",\".no-interstitial-ads\"],func:[e=>{let t=document.getElementsByTagName(\"article\");for(let a of t)if(e.contains(a))return!0}]}});"
+    }
+]

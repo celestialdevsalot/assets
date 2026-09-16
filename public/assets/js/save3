@@ -1,0 +1,70 @@
+function exportData() {
+    const data = {
+        name: localStorage.getItem("name") || "",
+        icon: localStorage.getItem("icon") || "",
+        lastCloak: localStorage.getItem("lastCloak") || "",
+        autoCloak: localStorage.getItem("autoCloak") || "0",
+        savedTitle: localStorage.getItem("savedTitle") || "",
+        savedFavicon: localStorage.getItem("savedFavicon") || "",
+        switchCloakOn: localStorage.getItem("switchCloakOn") || "false",
+        antiTog: localStorage.getItem("antiTog") || "false",
+        theme: localStorage.getItem("theme") || "default",
+        cookies: document.cookie
+    };
+    const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "celestial_data.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function importData() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "application/json";
+    input.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            try {
+                const data = JSON.parse(reader.result);
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        localStorage.setItem(key, data[key]);
+                    }
+                }
+                alert("data imported successfully! the page will now reload.");
+                location.reload();
+            } catch (err) {
+                alert("Failed to import data: " + err.message);
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
+}
+
+function applySettings() {
+    if (localStorage.getItem("theme")) {
+        document.documentElement.setAttribute("data-theme", localStorage.getItem("theme"));
+    }
+
+    if (localStorage.getItem("savedTitle")) {
+        document.title = localStorage.getItem("savedTitle");
+    }
+
+    if (localStorage.getItem("savedFavicon")) {
+        let link = document.querySelector("link[rel~='icon']");
+        if (!link) {
+            link = document.createElement("link");
+            link.rel = "icon";
+            document.head.appendChild(link);
+        }
+        link.href = localStorage.getItem("savedFavicon");
+    }
+}

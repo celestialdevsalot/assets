@@ -1,0 +1,10 @@
+tv: https://player.vidify.top/embed/tv/id/season/player?autoplay=false&poster=true&chromecast=true&servericon=false&setting=true&pip=true&download=true&logourl=https%3A%2F%2Fi.ibb.co%2F67wTJd9R%2Fpngimg-com-netflix-PNG11.png&font=Roboto&fontcolor=6f63ff&fontsize=20&opacity=0.5&primarycolor=1b2c4e&secondarycolor=4da8ff&iconcolor=a9a9a9&server=3
+movie: https://player.vidify.top/embed/movie/{id}?autoplay=false&poster=true&chromecast=true&servericon=false&setting=true&pip=true&download=true&font=Inter&fontcolor=6f63ff&fontsize=20&opacity=0.5&primarycolor=1b2c4e&secondarycolor=4da8ff&iconcolor=a9a9a9
+
+
+        "name": "Global Adblocker",
+        "everywhere": "yes",
+        "src": "fetch('https://raw.githubusercontent.com/MarcellPerger1/adblock-bookmarklet/refs/heads/main/dist/release/adblocker.min.js') .then(r => r.text()) .then(t => new Function(t)());"
+    }
+
+    https://kbhgames.com/wp-content/themes/v1/embed.php?url=https://yandex.com/games/app/385957?utm_source=distrib&is-united-page=1&skip-guard=1&header=no&utm_medium=kbhgames.com&clid=2818308&flags={%22adv_sticky_banner_disabled%22:true}&canonical=https://kbhgames.com/game/they-are-coming&w=960&h=600
